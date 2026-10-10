@@ -1,0 +1,2 @@
+import {ForbiddenException} from '@nestjs/common';import {CsrfGuard} from './csrf.guard';
+describe('CsrfGuard',()=>{const context=(cookie?:string,header?:string)=>({switchToHttp:()=>({getRequest:()=>({cookies:{ahmixen_csrf:cookie},headers:{'x-csrf-token':header}})})}) as any;it('rejects missing or mismatched tokens',()=>{expect(()=>new CsrfGuard().canActivate(context('a','b'))).toThrow(ForbiddenException)});it('accepts matching cookie and header tokens',()=>{expect(new CsrfGuard().canActivate(context('same','same'))).toBe(true)})});

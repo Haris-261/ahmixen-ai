@@ -1,0 +1,1 @@
+export function validate(env:Record<string,unknown>){for(const k of ['MONGODB_URI','ADMIN_EMAIL','ADMIN_INITIAL_PASSWORD','JWT_SECRET','FRONTEND_URL','ADMIN_URL'])if(!env[k])throw new Error(`Missing required environment variable: ${k}`);if(String(env.JWT_SECRET).length<32)throw new Error('JWT_SECRET must contain at least 32 characters');return env}

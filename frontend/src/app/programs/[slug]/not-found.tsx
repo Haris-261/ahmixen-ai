@@ -1,0 +1,1 @@
+import Link from 'next/link';export default function NotFound(){return <main className="pd-not-found"><span>404 / PROGRAM</span><h1>This program isn’t available.</h1><p>It may be unpublished, archived, or the link may have changed.</p><Link href="/#programs">Browse published programs</Link></main>}

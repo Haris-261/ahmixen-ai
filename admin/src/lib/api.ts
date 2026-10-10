@@ -1,0 +1,5 @@
+import type { Content } from './types';
+export const API=process.env.NEXT_PUBLIC_API_URL||'http://localhost:4000/api';
+export async function getContent():Promise<Content>{try{const r=await fetch(`${API}/homepage`,{next:{revalidate:60}});if(!r.ok)throw 0;return (await r.json()).data}catch{return {programs:[],resources:[],testimonials:[],courses:[]}}}
+function csrf(){if(typeof document==='undefined')return '';return document.cookie.split('; ').find(x=>x.startsWith('ahmixen_csrf='))?.split('=')[1]||''}
+export async function api(path:string,init:RequestInit={}){const headers:Record<string,string>={...(init.headers as Record<string,string>||{})};if(!(init.body instanceof FormData))headers['Content-Type']='application/json';if(init.method&&init.method!=='GET')headers['x-csrf-token']=csrf();const r=await fetch(`${API}${path}`,{...init,credentials:'include',headers});const j=await r.json().catch(()=>({message:'Request failed'}));if(!r.ok)throw new Error(Array.isArray(j.message)?j.message.join(', '):j.message||'Request failed');return j.data}

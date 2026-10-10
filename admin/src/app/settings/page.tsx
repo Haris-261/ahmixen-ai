@@ -1,0 +1,7 @@
+'use client';
+import {useState} from 'react';
+import {api} from '@/lib/api';
+import {toast} from 'sonner';
+import {PasswordInput} from '@/components/password-input';
+
+export default function Settings(){const[busy,setBusy]=useState(false);async function submit(e:React.FormEvent<HTMLFormElement>){e.preventDefault();setBusy(true);const f=new FormData(e.currentTarget);if(f.get('newPassword')!==f.get('confirmPassword')){toast.error('New passwords do not match');setBusy(false);return}try{await api('/auth/credentials',{method:'PATCH',body:JSON.stringify(Object.fromEntries(f))});toast.success('Credentials updated');e.currentTarget.reset()}catch(e){toast.error(e instanceof Error?e.message:'Update failed')}finally{setBusy(false)}}return <div className="admin-page settings"><header><span>ACCOUNT</span><h1>Settings</h1><p>Change the administrator email or password securely.</p></header><form onSubmit={submit}><h2>Login credentials</h2><p>Confirm your current password before saving any changes.</p><label>New email <input name="newEmail" type="email" placeholder="Leave blank to keep current"/></label><label>Current password <PasswordInput name="currentPassword" required autoComplete="current-password"/></label><div className="form-grid"><label>New password <PasswordInput name="newPassword" minLength={8} autoComplete="new-password"/></label><label>Confirm new password <PasswordInput name="confirmPassword" minLength={8} autoComplete="new-password"/></label></div><button disabled={busy}>{busy?'Saving…':'Update credentials'}</button></form></div>}

@@ -1,0 +1,6 @@
+'use client';
+import {useEffect,useState} from 'react';
+import {api} from '@/lib/api';
+import {toast} from 'sonner';
+type Application={_id:string;programTitle:string;name:string;email:string;phone:string;city?:string;background?:string;message?:string;status:string;createdAt:string};
+export default function Applications(){const[rows,setRows]=useState<Application[]>([]),[loading,setLoading]=useState(true);useEffect(()=>{api('/admin/applications').then(setRows).catch(e=>toast.error(e.message)).finally(()=>setLoading(false))},[]);return <div className="admin-page"><header><span>ENROLLMENT</span><h1>Applications</h1><p>People who submitted the Apply Now form on a program page.</p></header><div className="application-list">{loading?<div className="empty">Loading applications…</div>:rows.map(x=><article key={x._id}><div><span>{x.status}</span><small>{new Date(x.createdAt).toLocaleDateString()}</small></div><h2>{x.name}</h2><b>{x.programTitle}</b><p>{x.background}</p><p>{x.message}</p><footer><a href={`mailto:${x.email}`}>{x.email}</a><a href={`tel:${x.phone}`}>{x.phone}</a>{x.city&&<span>{x.city}</span>}</footer></article>)}{!loading&&!rows.length&&<div className="empty">No applications have been submitted yet.</div>}</div></div>}

@@ -1,0 +1,1 @@
+export function Logo({compact=false}:{compact?:boolean}){return <a href="/" className="logo" aria-label="Ahmixen AI home"><span className="logo-mark"><i/><i/><i/></span>{!compact&&<span>AHMIXEN <b>AI</b></span>}</a>}

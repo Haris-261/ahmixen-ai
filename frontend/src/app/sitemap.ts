@@ -1,0 +1,2 @@
+import type {MetadataRoute} from 'next';import {API} from '@/lib/api';
+export default async function sitemap():Promise<MetadataRoute.Sitemap>{const base=process.env.NEXT_PUBLIC_SITE_URL||'http://localhost:3000';let programs:any[]=[];try{const r=await fetch(`${API}/programs`,{next:{revalidate:3600}});if(r.ok)programs=(await r.json()).data}catch{}return[{url:base,lastModified:new Date()},...programs.map(p=>({url:`${base}/programs/${p.slug}`,lastModified:new Date(p.updatedAt||Date.now())}))]}
